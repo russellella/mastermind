@@ -1,3 +1,29 @@
+# Computer/Code Class
+  # Method: generate code
+    # 4 Random colors from a choice of 6
+    # Use to compare and reveal at end
+
+# Guess Board Class
+  # Initialize: Create array - empty circles (to push user input to)
+  # Method: Compare code to secret
+    # Compare 2 arrays
+      # If includes one of colors, push a white in hint board
+      # Compare each index, and if equal, push red to hint board
+  # Method: Change board
+
+# Hint Board Class
+  # Methods: Create array of four black squares
+
+# Game Class
+  # Initialize: Instructions
+  # Play Loop - 12 times OR when game over
+    # Guess Board | Hint Board
+    # Get input
+    # Push input to Guess Board
+    # Run checker
+  # Display win/loss message + code
+
+  # Method: Win/Loss Messages
 
 
 
