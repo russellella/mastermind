@@ -7,6 +7,16 @@ class Code
     4.times { @code.push([1,2,3,4,5,6].shuffle.first) }
   end
     # Use to compare and reveal at end
+  
+  def equal
+    #check if code equals guess
+  end
+  
+  def compare
+    #any? include?
+    a1.map.with_index {|v, i| v == a2[i] } # go through array and compare via index to other array
+  end
+  
   def display_final
     # convert numbers to unicode color circles
   end
@@ -16,11 +26,6 @@ end
 class GuessBoard
   def initialize
     @guess_board = Array.new(4) { "\u26AB" }
-  end
-
-  def compare
-    #any? include?
-    a1.map.with_index {|v, i| v == a2[i] } # go through array and compare via index to other array
   end
 end
 
