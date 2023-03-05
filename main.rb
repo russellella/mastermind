@@ -7,6 +7,9 @@ class Code
     4.times { @code.push([1,2,3,4,5,6].shuffle.first) }
   end
     # Use to compare and reveal at end
+  def display_final
+    # convert numbers to unicode color circles
+  end
 end
 
 # Guess Board Class
@@ -16,7 +19,8 @@ class GuessBoard
   end
 
   def compare
-    #put method here
+    #any? include?
+    a1.map.with_index {|v, i| v == a2[i] } # go through array and compare via index to other array
   end
 end
 
@@ -40,14 +44,15 @@ end
 # Game Class
 class Game
   def initialize
-    # Put instructions
+    # Put instructions: 1: Red, 2: Orange, 3: Yellow, 4: Green, 5: Blue, 6: Purple
     
   end
 
   def play
     #Loops 12 times OR when game over
     # Guess Board | Hint Board
-    # Get input
+    # Get input - 
+      # Check if all are 1-6, only 4
     # Push input to Guess Board
     # Run checker
   end
