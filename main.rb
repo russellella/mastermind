@@ -20,20 +20,17 @@ class Code
     @code.map! { |key| INDEX.fetch(key)}
   end
   
-  COLOR_CODE = {
-    "R" => "\u{1F534}",
-    "O" => "\u{1F7E0}",
-    "Y" => "\u{1F7E1}",
-    "G" => "\u{1F7E2}",
-    "B" => "\u{1F535}",
-    "P" => "\u{1F7E3}",
-  }
 end
 
 # Guess Board Class
 class GuessBoard
+  attr_accessor: @guess_board
   def initialize
     @guess_board = Array.new(4) { "\u26AB" }
+  end
+
+  def convert_input
+    @guess_board.map! { |key| INDEX.fetch(key)}
   end
 end
 
@@ -62,10 +59,17 @@ class Game
   end
 
   def play
-    #Loops 12 times OR when game over
-    # Guess Board | Hint Board
-    # Get input - 
-      # Check if all are 1-6, only 4
+    12.times #or when game over
+      #Display Guess Board
+      #Display Hint Board
+      input = gets.chomp
+        if input =~ /\A[ROYGBP]*\z/ && input.length == 4
+          input.split("")  # a.replace(b) - replace a with b
+          @guess_board.replace(input.split("")) #Need to test this
+        else
+          puts "Uh oh! Please only input a combination of 4 of these colors: ROYGBP"
+          input = gets.chomp
+        end
     # Push input to Guess Board array
     # Run checker
   end
@@ -73,7 +77,15 @@ class Game
   # Method: Win/Loss Messages
 end
     
-
+# Where to put this? Needs to be used by both Code and Guess Board classes
+COLOR_CODE = {
+  "R" => "\u{1F534}",
+  "O" => "\u{1F7E0}",
+  "Y" => "\u{1F7E1}",
+  "G" => "\u{1F7E2}",
+  "B" => "\u{1F535}",
+  "P" => "\u{1F7E3}",
+}
 
 ### Color Mark Reference ###
 # Red Circle "\u{1F534}"
