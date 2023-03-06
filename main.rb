@@ -4,12 +4,11 @@ class Code
     @code = Array.new
   end
   def generate_code
-    4.times { @code.push([1,2,3,4,5,6].shuffle.first) }
+    4.times { @code.push(["R","O","Y","G","B","P"].shuffle.first) }
   end
-    # Use to compare and reveal at end
   
-  def equal
-    #check if code equals guess
+  def equal(arr)
+    @code == arr
   end
   
   def compare
@@ -18,8 +17,17 @@ class Code
   end
   
   def display_final
-    # convert numbers to unicode color circles
+    @code.map! { |key| INDEX.fetch(key)}
   end
+  
+  COLOR_CODE = {
+    "R" => "\u{1F534}",
+    "O" => "\u{1F7E0}",
+    "Y" => "\u{1F7E1}",
+    "G" => "\u{1F7E2}",
+    "B" => "\u{1F535}",
+    "P" => "\u{1F7E3}",
+  }
 end
 
 # Guess Board Class
@@ -58,7 +66,7 @@ class Game
     # Guess Board | Hint Board
     # Get input - 
       # Check if all are 1-6, only 4
-    # Push input to Guess Board
+    # Push input to Guess Board array
     # Run checker
   end
   # Display win/loss message + code
@@ -69,10 +77,10 @@ end
 
 ### Color Mark Reference ###
 # Red Circle "\u{1F534}"
-# Blue Circle "\u{1F535}"
 # Orange Circle "\u{1F7E0}"
 # Yellow Circle "\u{1F7E1}"
 # Green Circle "\u{1F7E2}"
+# Blue Circle "\u{1F535}"
 # Purple Circle "\u{1F7E3}"
 
 # Black Circle "\u26AB"
