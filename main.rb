@@ -10,13 +10,7 @@ class Code
   def equal(arr)
     @code == arr
   end
-    # guess_array.map.with_index {|v, i| v == a2[i] }
-      # go through array and compare via index to other array
-    # To use instance arrays correctly: name_of_instance.atrr_accessor_nam
-#any? include?
-    # Notes: Compare by index to see if the same.
-      # If the same, push a red circle to hint board. Then remove original.
-      # With remaining array, use include? - If includes, push a white circle to hint board.
+    
 ### Temp for testing: ###
 guess = ["R", "O", "Y", "G"]
 code = ["R", "O", "P", "O"]
@@ -30,6 +24,12 @@ hint = Array.new
         # Deletes item from array if it matches
         temp_array.delete_at(i)
       end
+    end
+    # Creates array of any that are in both arrays (including duplicates)
+    white_squ = (a & b).flat_map { |n| [n]*[a.count(n), b.count(n)].min }
+    # pushes white squares for each of these to hint array
+    white_squ.map do |i|
+      hint_board << "\u2B1C"
     end
   end
   
