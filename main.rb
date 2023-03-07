@@ -70,11 +70,17 @@ class Game
           puts "Uh oh! Please only input a combination of 4 of these colors: ROYGBP"
           input = gets.chomp
         end
-    # Push input to Guess Board array
+    
     # Run checker
   end
-  # Display win/loss message + code
-  # Method: Win/Loss Messages
+
+  def end_message
+    #display correct code
+    if # guess code == final code
+      puts "You win! You guessed the code correctly."
+    else
+      puts "You lose. You didn't guess the code."
+    end
 end
     
 # Where to put this? Needs to be used by both Code and Guess Board classes
