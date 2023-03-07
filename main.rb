@@ -10,10 +10,27 @@ class Code
   def equal(arr)
     @code == arr
   end
-  
-  def compare
-    #any? include?
-    a1.map.with_index {|v, i| v == a2[i] } # go through array and compare via index to other array
+    # guess_array.map.with_index {|v, i| v == a2[i] }
+      # go through array and compare via index to other array
+    # To use instance arrays correctly: name_of_instance.atrr_accessor_nam
+#any? include?
+    # Notes: Compare by index to see if the same.
+      # If the same, push a red circle to hint board. Then remove original.
+      # With remaining array, use include? - If includes, push a white circle to hint board.
+### Temp for testing: ###
+guess = ["R", "O", "Y", "G"]
+code = ["R", "O", "P", "O"]
+hint = Array.new
+
+  def compare(temp_array, code_array, hint)
+    temp_array.map.with_index do |v, i|
+      if v == code_array[i]
+        #Add red square
+        hint << "\u{1F7E5}"
+        # Deletes item from array if it matches
+        temp_array.delete_at(i)
+      end
+    end
   end
   
   def display_final
@@ -26,7 +43,7 @@ end
 class GuessBoard
   attr_accessor: @guess_board
   def initialize
-    @guess_board = Array.new(4) { "\u26AB" }
+    @guess_board = Array.new
   end
 
   def convert_input
@@ -43,6 +60,7 @@ end
 
 
 class HintBoard
+  attr_accessor :hint_board
   def initialize
     @hint_board = Array.new(4) { "\u2B1B" }
   end
