@@ -1,39 +1,36 @@
-# Computer/Code Class
 class Code
+  attr_accessor :code
   def initialize
-    @code = Array.new
+    @code = code
+    @secret_code = Array.new
+    generate_code
   end
   def generate_code
-    4.times { @code.push(["R","O","Y","G","B","P"].shuffle.first) }
+    4.times { @secret_code.push(["R","O","Y","G","B","P"].shuffle.first) }
   end
   
-  def equal(arr)
-    @code == arr
+  def equal?
+    @secret_code == @guess_board
   end
     
-### Temp for testing: ###
-guess = ["R", "O", "Y", "G"]
-code = ["R", "O", "P", "O"]
-hint = Array.new
-
-  def compare(temp_array, code_array, hint)
+  def compare(guess_board, hint_board)
+    temp_array = guess_board.board
     temp_array.map.with_index do |v, i|
-      if v == code_array[i]
-        hint << "\u{1F7E5}"
+      if v == secret_code[i]
+        hint_board.board << "\u{1F7E5}"
         temp_array.delete_at(i)
       end
     end
-    white_squ = (a & b).flat_map { |n| [n]*[a.count(n), b.count(n)].min }
-    white_squ.map do |i|
-      hint_board << "\u2B1C"
+    temp_array = (a & b).flat_map { |n| [n]*[a.count(n), b.count(n)].min }
+    temp_array.map do |i|
+      hint_board.board << "\u2B1C"
     end
   end
   
   def display_final
-    @code.map! { |key| INDEX.fetch(key)}
+    @secret_code.map! { |key| INDEX.fetch(key)}
   end
 end
-
 
 class Board
   attr_accessor :board
@@ -54,6 +51,7 @@ class Game
   def initialize
     @guess_board = Board.new
     @hint_board = Board.new
+    @code = Code.new
     puts "Time to play a game of Mastermind!
     The computer will generate a code of four random colors out of six possible, and you have twelve turns to guess it.
     After each guess, you'll get a code back telling you how close you are: a red square for each correct color guessed in the right spot, and a white square for each correct color in an incorrect spot.
@@ -61,19 +59,19 @@ class Game
   end
 
   def play
-    12.times do #or when game over
+    12.times do     #|| until guess_board.equal? do
       guess_board.display
       hint_board.display
       while input = gets.chomp
         if input =~ /\A[ROYGBP]*\z/ && input.length == 4
           input.split("")
-          @guess_board.replace(input.split(""))
+          guess_board.board.replace(input.split(""))
           break
         else
           puts "Uh oh! Please only input a combination of 4 of these colors: ROYGBP"
         end
       end
-      guess_board.compare # not going to work - method is in wrong class. How to do this?
+      @code.compare(guess_board.board,hint_board.board)
       guess_board.clear
       hint_board.clear
     end
@@ -86,9 +84,9 @@ class Game
     else
       puts "You lose. You didn't guess the code."
     end
+  end
 end
     
-# Where to put this? Needs to be used by both Code and Board classes
 COLOR_CODE = {
   "R" => "\u{1F534}",
   "O" => "\u{1F7E0}",
@@ -98,18 +96,5 @@ COLOR_CODE = {
   "P" => "\u{1F7E3}",
 }
 
-
-
-### Color Mark Reference ###
-# Red Circle "\u{1F534}"
-# Orange Circle "\u{1F7E0}"
-# Yellow Circle "\u{1F7E1}"
-# Green Circle "\u{1F7E2}"
-# Blue Circle "\u{1F535}"
-# Purple Circle "\u{1F7E3}"
-
-# Black Circle "\u26AB"
-
-# Black Square "\u2B1B"
-# Red Square "\u{1F7E5}"
-# White Square "\u2B1C"
+newgame = Game.new
+newgame.play
