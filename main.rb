@@ -1,92 +1,109 @@
-class Code
-  attr_accessor :code
+class Board
+  attr_accessor :board
+  
   def initialize
-    @code = code
-    @secret_code = Array.new
-    generate_code
+    @board = []
   end
-  def generate_code
-    4.times { @secret_code.push(["R","O","Y","G","B","P"].shuffle.first) }
+
+  def add_color(color)
+    @board << color
   end
-  
-  def equal?
-    @secret_code == @guess_board
+
+  def display
+    puts board.join("")
   end
-    
-  def compare(guess_board, hint_board)
-    temp_array = guess_board.board
-    temp_array.map.with_index do |v, i|
-      if v == secret_code[i]
-        hint_board.board << "\u{1F7E5}"
-        temp_array.delete_at(i)
-      end
-    end
-    temp_array = (a & b).flat_map { |n| [n]*[a.count(n), b.count(n)].min }
-    temp_array.map do |i|
-      hint_board.board << "\u2B1C"
-    end
-  end
-  
-  def display_final
-    @secret_code.map! { |key| INDEX.fetch(key)}
+
+  def to_color
+    @board.map! { |key| INDEX.fetch(key) }
   end
 end
 
-class Board
-  attr_accessor :board
-
+class Code
+  attr_accessor :code
   def initialize
-    @board = Array.new
+    @code = []
+    generate_code
   end
-  def to_color
-    @board.map! { |key| INDEX.fetch(key)}
+
+  def generate_code
+    4.times { @code.push(["R", "O", "Y", "G", "B", "P"].shuffle.first) }
   end
-  def display
-    puts board.join("")
+
+  def equal?
+    @code == @guess_board
+  end
+
+  def display_final
+    @code.map! { |key| INDEX.fetch(key) }
   end
 end
 
 class Game
-  attr_accessor :guess_board, :hint_board
   def initialize
     @guess_board = Board.new
     @hint_board = Board.new
-    @code = Code.new
+    @secret_code = Code.new
     puts "Time to play a game of Mastermind!
     The computer will generate a code of four random colors out of six possible, and you have twelve turns to guess it.
     After each guess, you'll get a code back telling you how close you are: a red square for each correct color guessed in the right spot, and a white square for each correct color in an incorrect spot.
     R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
   end
-
+  
   def play
-    12.times do     #|| until guess_board.equal? do
-      guess_board.display
-      hint_board.display
-      while input = gets.chomp
+    12.times do
+      break if equal?
+      get_user_input
+      p @guess_board.board
+      compare
+      p @hint_board.board
+      @hint_board.board.clear
+      @guess_board.board.clear
+    end
+    game_end_message
+  end
+
+  def get_user_input
+    while input = gets.chomp
         if input =~ /\A[ROYGBP]*\z/ && input.length == 4
           input.split("")
-          guess_board.board.replace(input.split(""))
+          @guess_board.board.replace(input.split(""))
           break
         else
           puts "Uh oh! Please only input a combination of 4 of these colors: ROYGBP"
         end
+    end
+  end
+  
+  def compare
+    temp_array = @guess_board.board
+    temp_array.map.with_index do |v, i|
+      if v == @secret_code.code[i]
+        @hint_board.add_color("\u{1F7E5}")
+        temp_array.delete_at(i)
       end
-      @code.compare(guess_board.board,hint_board.board)
-      guess_board.clear
-      hint_board.clear
+    end
+    temp_array = (temp_array & @secret_code.code).flat_map { |n| [n] * [temp_array.count(n), @secret_code.code.count(n)].min }
+    temp_array.map do |i|
+      @hint_board.add_color("\u2B1C")
     end
   end
 
-  def end_message
-    #display final code
-    if # guess code == final code
+  def equal?
+    @secret_code.code == @guess_board.board
+  end
+  
+  def game_end_message
+    p @secret_code.code
+    if equal?
       puts "You win! You guessed the code correctly."
     else
       puts "You lose. You didn't guess the code."
     end
   end
+  
 end
-    
+
+
 COLOR_CODE = {
   "R" => "\u{1F534}",
   "O" => "\u{1F7E0}",
@@ -96,5 +113,5 @@ COLOR_CODE = {
   "P" => "\u{1F7E3}",
 }
 
-newgame = Game.new
-newgame.play
+new_game = Game.new
+new_game.play
