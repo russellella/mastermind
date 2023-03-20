@@ -10,11 +10,8 @@ class Board
   end
 
   def display
+    @board.map! { |key| COLOR_CODE.fetch(key) }
     puts board.join("")
-  end
-
-  def to_color
-    @board.map! { |key| INDEX.fetch(key) }
   end
 end
 
@@ -34,7 +31,8 @@ class Code
   end
 
   def display_final
-    @code.map! { |key| INDEX.fetch(key) }
+    @code.map! { |key| COLOR_CODE.fetch(key) }
+    puts board.join("")
   end
 end
 
