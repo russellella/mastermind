@@ -9,8 +9,13 @@ class Board
     @board << color
   end
 
+#  def display_color
+#    temp_board = @board
+#    temp_board.map! { |key| COLOR_CODE.fetch(key) }
+#    puts temp_board.join("")
+#  end
+
   def display
-    @board.map! { |key| COLOR_CODE.fetch(key) }
     puts board.join("")
   end
 end
@@ -32,7 +37,7 @@ class Code
 
   def display_final
     @code.map! { |key| COLOR_CODE.fetch(key) }
-    puts board.join("")
+    puts code.join("")
   end
 end
 
@@ -53,7 +58,7 @@ class Game
       get_user_input
       p @guess_board.board
       compare
-      p @hint_board.board
+      @hint_board.display
       @hint_board.board.clear
       @guess_board.board.clear
     end
@@ -73,16 +78,18 @@ class Game
   end
   
   def compare
-    temp_array = @guess_board.board
-    temp_array.map.with_index do |v, i|
+    temp_array = []
+    temp_array.replace(@guess_board.board)
+    @guess_board.board.map.with_index do |v, i|
       if v == @secret_code.code[i]
         @hint_board.add_color("\u{1F7E5}")
         temp_array.delete_at(i)
       end
     end
-    temp_array = (temp_array & @secret_code.code).flat_map { |n| [n] * [temp_array.count(n), @secret_code.code.count(n)].min }
     temp_array.map do |i|
-      @hint_board.add_color("\u2B1C")
+      if @secret_code.code.include?(i)
+        @hint_board.add_color("\u2B1C")
+      end
     end
   end
 
@@ -91,7 +98,7 @@ class Game
   end
   
   def game_end_message
-    p @secret_code.code
+    @secret_code.display_final
     if equal?
       puts "You win! You guessed the code correctly."
     else
