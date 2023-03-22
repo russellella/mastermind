@@ -75,26 +75,22 @@ class Game
   end
   
   def compare
-    temp_guess_array = []
-    temp_guess_array.replace(@guess_board.board)
-    temp_secret_array = []
-    temp_secret_array.replace(@secret_code.code)
+    temp_array = []
+    temp_array.replace(@secret_code.code)
     @guess_board.board.map.with_index do |v, i|
       if v == @secret_code.code[i]
         @hint_board.add_color("H")
-        temp_guess_array.delete_at(i)
-        temp_secret_array.delete_at(i)
+        @guess_board.board[i] = 0
+        temp_array[i] = 1
       end
     end
-    temp_guess_array.map.with_index do |v, i|
-      if temp_secret_array.include?(v)
+    @guess_board.board.map.with_index do |v, i|
+      if temp_array.include?(v)
         @hint_board.add_color("W")
-        temp_guess_array.delete_at(i)
       end
     end
   end
 
-### Broken Here ###
   def check_equal
     if @secret_code.code == @guess_board.board
       @win = true
