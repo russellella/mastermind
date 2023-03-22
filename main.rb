@@ -9,14 +9,8 @@ class Board
     @board << color
   end
 
-#  def display_color
-#    temp_board = @board
-#    temp_board.map! { |key| COLOR_CODE.fetch(key) }
-#    puts temp_board.join("")
-#  end
-
   def display
-    puts board.join("")
+    puts @board.map { |key| COLOR_CODE.fetch(key) }.join("")
   end
 end
 
@@ -42,21 +36,24 @@ class Code
 end
 
 class Game
+  
   def initialize
     @guess_board = Board.new
     @hint_board = Board.new
     @secret_code = Code.new
+    @win = false
     puts "Time to play a game of Mastermind!
     The computer will generate a code of four random colors out of six possible, and you have twelve turns to guess it.
     After each guess, you'll get a code back telling you how close you are: a red square for each correct color guessed in the right spot, and a white square for each correct color in an incorrect spot.
     R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
+    p @secret_code ### FOR TESTING ###
   end
   
   def play
     12.times do
-      break if equal?
       get_user_input
-      p @guess_board.board
+      break if check_equal
+      @guess_board.display
       compare
       @hint_board.display
       @hint_board.board.clear
@@ -78,28 +75,35 @@ class Game
   end
   
   def compare
-    temp_array = []
-    temp_array.replace(@guess_board.board)
+    temp_guess_array = []
+    temp_guess_array.replace(@guess_board.board)
+    temp_secret_array = []
+    temp_secret_array.replace(@secret_code.code)
     @guess_board.board.map.with_index do |v, i|
       if v == @secret_code.code[i]
-        @hint_board.add_color("\u{1F7E5}")
-        temp_array.delete_at(i)
+        @hint_board.add_color("H")
+        temp_guess_array.delete_at(i)
+        temp_secret_array.delete_at(i)
       end
     end
-    temp_array.map do |i|
-      if @secret_code.code.include?(i)
-        @hint_board.add_color("\u2B1C")
+    temp_guess_array.map.with_index do |v, i|
+      if temp_secret_array.include?(v)
+        @hint_board.add_color("W")
+        temp_guess_array.delete_at(i)
       end
     end
   end
 
-  def equal?
-    @secret_code.code == @guess_board.board
+### Broken Here ###
+  def check_equal
+    if @secret_code.code == @guess_board.board
+      @win = true
+    end
   end
   
   def game_end_message
     @secret_code.display_final
-    if equal?
+    if @win == true
       puts "You win! You guessed the code correctly."
     else
       puts "You lose. You didn't guess the code."
@@ -116,6 +120,8 @@ COLOR_CODE = {
   "G" => "\u{1F7E2}",
   "B" => "\u{1F535}",
   "P" => "\u{1F7E3}",
+  "H" => "\u{1F7E5}",
+  "W" => "\u2B1C"
 }
 
 new_game = Game.new
