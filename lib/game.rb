@@ -7,6 +7,7 @@ class Game
     @hint_board = Board.new
     @secret_code = Code.new
     @win = false
+    # Fix intro to use new Message method
     puts "Time to play a game of Mastermind!
     The computer will generate a code of four random colors out of
     six possible, and you have twelve turns to guess it.
@@ -26,7 +27,8 @@ class Game
     # "The computer will attempt to crack your code.
     # Put in a 4-color combination of the following colors: 
     #   R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
-    # user_input
+    # user_input *this should work? Push to code board, or...?
+
 
     # breaker_instructions:
     #   "The computer will generate a code of four random colors out of
@@ -41,6 +43,7 @@ class Game
   def play #play_breaker
     12.times do
       user_input
+      @guess_board.board.replace(input.split(''))
       break if check_equal
 
       @guess_board.display
@@ -63,8 +66,6 @@ class Game
   def user_input
     while (input = gets.chomp)
       if input =~ /\A[ROYGBP]*\z/ && input.length == 4
-        input.split('')
-        @guess_board.board.replace(input.split(''))
         break
       else
         puts 'Uh oh! Please only input a combination of 4 of these colors: ROYGBP'
@@ -106,9 +107,9 @@ class Game
   def game_end_message
     @secret_code.display_final
     if @win == true
-      puts 'You win! You guessed the code correctly.'
+      puts 'You win! You guessed the code correctly.' # fix w/ new message method
     else
-      puts 'You lose. You did not guess the code.'
+      puts 'You lose. You did not guess the code.' # fix w/ new message method
     end
     # Alternatives to code in:
       # "You lost - the computer guessed your code."
