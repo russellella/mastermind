@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
+require_relative 'messages.rb'
+
 # Basic gameplay for Mastermind
 class Game
+  include Messages
+
   def initialize
     @guess_board = Board.new
     @hint_board = Board.new
     @secret_code = Code.new
     @win = false
-    # Fix intro to use new Message method
-    puts "Time to play a game of Mastermind!
-    The computer will generate a code of four random colors out of
-    six possible, and you have twelve turns to guess it.
-    After each guess, you'll get a code back telling you how close you are:
-    a red square for each correct color guessed in the right spot, and a
-    white square for each correct color in an incorrect spot.
-    R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
+    puts message_welcome
 
     # New welcome message:
     # "It's time to play a game of Mastermind! Do you want to be a code maker or breaker?
@@ -38,6 +35,18 @@ class Game
     #   white square for each correct color in an incorrect spot.
     #   R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
 
+  end
+
+  # Use begin game to give instructions based on maker/breaker
+  # Create method that has game intro, then play loop, then end?
+  def begin_game
+    puts message_welcome
+    user_input # may need to use slightly tweaked version for maker/breaker
+    # if maker
+        puts message_maker_instructions
+    #elsif breaker
+      puts message_breaker_instructions
+  # end if/else loop
   end
 
   def play #play_breaker
