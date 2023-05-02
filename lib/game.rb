@@ -22,11 +22,14 @@ class Game
     # check if/else below:
     if @user = 'maker'
         puts message_maker_instructions
+        code_input
+        # set input to secret code
         play_maker
     elsif @user = 'breaker'
       puts message_breaker_instructions
+      # generate secret code
       play_breaker
-    # end if/else loop
+    end
   end
 
   def play_breaker
