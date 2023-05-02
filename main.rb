@@ -12,5 +12,5 @@ new_game.play
 
 # Create an array of arrays of all possibilities
 # Where do I stick this?
-a = ['R', 'O', 'Y', 'G', 'B', 'P']
-p a.repeated_permutation(4).to_a
+colors = ['R', 'O', 'Y', 'G', 'B', 'P']
+color_array = a.repeated_permutation(4).to_a

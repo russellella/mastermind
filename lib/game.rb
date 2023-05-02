@@ -11,30 +11,6 @@ class Game
     @hint_board = Board.new
     @secret_code = Code.new
     @win = false
-    puts message_welcome
-
-    # New welcome message:
-    # "It's time to play a game of Mastermind! Do you want to be a code maker or breaker?
-      # Type 'maker' or 'breaker' :"
-
-    # user_input 
-      # if maker/breaker - set player to one of these?
-
-    # maker_instructions:
-    # "The computer will attempt to crack your code.
-    # Put in a 4-color combination of the following colors: 
-    #   R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
-    # user_input *this should work? Push to code board, or...?
-
-
-    # breaker_instructions:
-    #   "The computer will generate a code of four random colors out of
-    #  six possible, and you have twelve turns to guess it.
-    #   After each guess, you'll get a code back telling you how close you are:
-    #   a red square for each correct color guessed in the right spot, and a
-    #   white square for each correct color in an incorrect spot.
-    #   R: Red, O: Orange, Y: Yellow, G: Green, B: Blue, P: Purple"
-
   end
 
   # Use begin game to give instructions based on maker/breaker
@@ -46,7 +22,7 @@ class Game
         puts message_maker_instructions
     #elsif breaker
       puts message_breaker_instructions
-  # end if/else loop
+    # end if/else loop
   end
 
   def play #play_breaker
@@ -67,9 +43,9 @@ class Game
   # play_maker
     # Loop: (how many times?)
     # Computer makes random guess (from possibility array)
-    # p a.sample(4) # Doesn't work correctly - need to pick from array of arrays
-    # Display computer's guess
-    # break if guess = secret_code
+    # comp_guess = color_array.sample
+    # p comp_guess
+    # break if comp_guess = secret_code
     # compare_maker
 
   def user_input
