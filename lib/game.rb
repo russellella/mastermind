@@ -9,25 +9,25 @@ class Game
   def initialize
     @guess_board = Board.new
     @hint_board = Board.new
-    @secret_code = Code.new
+    @secret_code
     @win = false
     @user
   end
 
-  # Use begin game to give instructions based on maker/breaker
   # Create method that has game intro, then play loop, then end?
+
   def begin_game
     puts message_welcome
-    user_input # may need to use slightly tweaked version for maker/breaker
+    user_input
     # check if/else below:
     if @user = 'maker'
-        puts message_maker_instructions
-        code_input
-        # set input to secret code
-        play_maker
+      puts message_maker_instructions
+      code_input
+      @secret_code = @guess_board
+      play_maker
     elsif @user = 'breaker'
       puts message_breaker_instructions
-      # generate secret code
+      @secret_code = Code.new
       play_breaker
     end
   end
@@ -52,13 +52,15 @@ class Game
       comp_guess = color_array.sample
       p comp_guess
       break if comp_guess = secret_code
-    # compare_maker
+      compare_maker
     end
   end
 
   def code_input
     while (input = gets.chomp)
       if input =~ /\A[ROYGBP]*\z/ && input.length == 4
+        input.split('')
+        @guess_board.board.replace(input.split(''))
         break
       else
         puts 'Uh oh! Please only input a combination of 4 of these colors: ROYGBP'
@@ -101,9 +103,13 @@ class Game
     # Compare to secret code - use altered version of compare method?
       # If value at index = secret code, push 'H' to hint board - don't need to do this
         #else push 'Nil'?
-      # Iterate over possibility array
-          #if value of guess[i] = secret_code[i], keep it (do nothing)
-        # Else delete from array
+      # Iterate over color_array - use select! ?
+        # Take each array in color_array
+        # If guess_array[i] == secret_code[i]
+          # AND guess_array[i] == array[i]
+          # Keep it
+      color_array
+
   end
 
   def check_equal
