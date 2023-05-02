@@ -11,6 +11,7 @@ class Game
     @hint_board = Board.new
     @secret_code = Code.new
     @win = false
+    @user
   end
 
   # Use begin game to give instructions based on maker/breaker
@@ -18,21 +19,24 @@ class Game
   def begin_game
     puts message_welcome
     user_input # may need to use slightly tweaked version for maker/breaker
-    # if maker
+    # check if/else below:
+    if @user = 'maker'
         puts message_maker_instructions
-    #elsif breaker
+        play_maker
+    elsif @user = 'breaker'
       puts message_breaker_instructions
+      play_breaker
     # end if/else loop
   end
 
-  def play #play_breaker
+  def play_breaker
     12.times do
-      user_input
+      code_input
       @guess_board.board.replace(input.split(''))
       break if check_equal
 
       @guess_board.display
-      compare
+      compare_breaker
       @hint_board.display
       @hint_board.board.clear
       @guess_board.board.clear
@@ -40,15 +44,16 @@ class Game
     game_end_message
   end
 
-  # play_maker
-    # Loop: (how many times?)
-    # Computer makes random guess (from possibility array)
-    # comp_guess = color_array.sample
-    # p comp_guess
-    # break if comp_guess = secret_code
+  def play_maker
+    6.times do
+      comp_guess = color_array.sample
+      p comp_guess
+      break if comp_guess = secret_code
     # compare_maker
+    end
+  end
 
-  def user_input
+  def code_input
     while (input = gets.chomp)
       if input =~ /\A[ROYGBP]*\z/ && input.length == 4
         break
@@ -58,7 +63,21 @@ class Game
     end
   end
 
-  def compare #compare_breaker?
+  def user_input
+    while (input = gets.chomp)
+      if input.downcase = 'maker'
+        @user = 'maker'
+        break
+      elsif input.downcase = 'breaker'
+        @user = 'breaker'
+        break
+      else
+        puts 'Uh oh! Please type Maker or Breaker.'
+      end
+    end
+  end
+
+  def compare_breaker
     temp_array = []
     temp_array.replace(@secret_code.code)
     @guess_board.board.map.with_index do |v, i|
@@ -75,13 +94,14 @@ class Game
     end
   end
 
-  #compare_maker
+  def compare_maker
     # Compare to secret code - use altered version of compare method?
       # If value at index = secret code, push 'H' to hint board - don't need to do this
         #else push 'Nil'?
       # Iterate over possibility array
           #if value of guess[i] = secret_code[i], keep it (do nothing)
         # Else delete from array
+  end
 
   def check_equal
     if @secret_code.code == @guess_board.board
